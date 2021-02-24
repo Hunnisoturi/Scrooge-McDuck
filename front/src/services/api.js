@@ -6,4 +6,4 @@ const uploadCSVData = (data) => (
 
 export default {
   uploadCSVData,
-}
+};

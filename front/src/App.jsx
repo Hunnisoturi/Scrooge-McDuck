@@ -1,31 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Row, Col, Modal, ModalBody, ModalFooter, ModalTitle, Form, FormGroup, FormFile, Container } from 'react-bootstrap'
-import ModalHeader from 'react-bootstrap/ModalHeader'
+import React, { useState } from 'react';
+import { Button, Row, Col, Modal, ModalBody, ModalFooter, ModalTitle, Form, FormGroup, FormFile, Container } from 'react-bootstrap';
+import ModalHeader from 'react-bootstrap/ModalHeader';
 import API from './services/api';
 import './styles/App.scss';
 
 const App = () => {
-
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
 
   const uploadFile = () => {
-    setSelectedFile(document.getElementById("file").files[0]);
+    setSelectedFile(document.getElementById('file').files[0]);
 
     const data = new FormData();
     data.append('file', selectedFile);
     API.uploadCSVData(data)
-    .then(() => {
-      setModalOpen(false);
-    })
-    .catch(err => {
-      console.error(err);
-    })
-  }
-
-  useEffect(() => {
-    console.log(selectedFile);
-  }, [selectedFile]);
+      .then(() => {
+        setModalOpen(false);
+      })
+      .catch(err => {
+        console.error(err);
+      });
+  };
 
   return (
     <Container fluid>
@@ -53,7 +48,7 @@ const App = () => {
           {/* <input type="file"></input> */}
           <Form>
             <FormGroup>
-              <FormFile id="file" accept=".csv"/>
+              <FormFile id="file" accept=".csv" />
             </FormGroup>
           </Form>
         </ModalBody>
@@ -62,8 +57,8 @@ const App = () => {
           <Button variant="success" onClick={uploadFile}>Save Data</Button>
         </ModalFooter>
       </Modal>
-      </Container>
+    </Container>
   );
-}
+};
 
 export default App;
