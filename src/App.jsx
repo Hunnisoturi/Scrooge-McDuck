@@ -1,26 +1,45 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Row, Col, Modal, ModalBody, ModalFooter, ModalTitle, Form, FormGroup, FormFile, Container } from 'react-bootstrap';
 import ModalHeader from 'react-bootstrap/ModalHeader';
 import BullTrend from './components/BullTrend';
+import RawData from './components/RawData';
 import './styles/App.scss';
 
 const App = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [csvData, setCsvData] = useState(false);
+  const [formattedData, setFormattedData] = useState(null);
+
+  const csvDataToArray = data => {
+    const rows = data.slice(data.indexOf('\n')).split('\n');
+    const newRows = rows.map(row => row.split(', '));
+    newRows.forEach((row, index) => {
+      if (row.length === 1) {
+        newRows.splice(index, 1);
+      }
+    });
+    setFormattedData(newRows);
+  };
 
   const readFile = () => {
     const file = document.getElementById('file').files[0];
     const fileReader = new FileReader();
     fileReader.onload = (() => {
-      setCsvData(fileReader.result);
-      console.log(fileReader.result);
+      const data = fileReader.result;
+      csvDataToArray(data);
       setModalOpen(false);
     });
     fileReader.readAsText(file);
   };
 
+  useEffect(() => {
+    console.log(formattedData);
+  }, [formattedData]);
+
+  const conditional = formattedData ? <RawData data={formattedData} />
+    : <h1>Start by Importing Data</h1>;
+
   return (
-    <Container fluid="xl">
+    <Container fluid="xl" className="container">
       <header className="header">
         <Row>
           <Col xs={10}>
@@ -31,8 +50,9 @@ const App = () => {
           </Col>
         </Row>
       </header>
-      <main>
-        <BullTrend data={csvData} />
+      <main className="main">
+        {/* <BullTrend /> */}
+        {conditional}
       </main>
       <Modal size="lg" centered show={modalOpen} onHide={() => setModalOpen(false)}>
         <ModalHeader closeButton>

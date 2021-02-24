@@ -21,9 +21,22 @@
   align-items: center;
 }
 
+.main {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container {
+  height: 100%;
+}
+
 body {
   min-height: 100vh;
 }
+
 
 .App-header {
   background-color: #282c34;
