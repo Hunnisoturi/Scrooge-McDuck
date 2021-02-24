@@ -1,11 +1,12 @@
 import React from 'react';
 import { Accordion, AccordionToggle, AccordionCollapse, Button, Table, Card } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import '../styles/RawData.scss';
 
 const RawData = ({ data }) => (
   <Accordion>
-    <Card>
-      <Card.Header className="w-100">
+    <Card className="card">
+      <Card.Header className="header">
         <AccordionToggle as={Button} variant="link" eventKey="0">
           Show Raw Data
         </AccordionToggle>
