@@ -1,29 +1,26 @@
 import React, { useState } from 'react';
 import { Button, Row, Col, Modal, ModalBody, ModalFooter, ModalTitle, Form, FormGroup, FormFile, Container } from 'react-bootstrap';
 import ModalHeader from 'react-bootstrap/ModalHeader';
-import API from './services/api';
+import BullTrend from './components/BullTrend';
 import './styles/App.scss';
 
 const App = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedFile, setSelectedFile] = useState(null);
+  const [csvData, setCsvData] = useState(false);
 
-  const uploadFile = () => {
-    setSelectedFile(document.getElementById('file').files[0]);
-
-    const data = new FormData();
-    data.append('file', selectedFile);
-    API.uploadCSVData(data)
-      .then(() => {
-        setModalOpen(false);
-      })
-      .catch(err => {
-        console.error(err);
-      });
+  const readFile = () => {
+    const file = document.getElementById('file').files[0];
+    const fileReader = new FileReader();
+    fileReader.onload = (() => {
+      setCsvData(fileReader.result);
+      console.log(fileReader.result);
+      setModalOpen(false);
+    });
+    fileReader.readAsText(file);
   };
 
   return (
-    <Container fluid>
+    <Container fluid="xl">
       <header className="header">
         <Row>
           <Col xs={10}>
@@ -34,9 +31,9 @@ const App = () => {
           </Col>
         </Row>
       </header>
-      {/* <main className="d-flex align-items-center justify-content-center">
-        <h1>Start by importing data from a file</h1>
-      </main> */}
+      <main>
+        <BullTrend data={csvData} />
+      </main>
       <Modal size="lg" centered show={modalOpen} onHide={() => setModalOpen(false)}>
         <ModalHeader closeButton>
           <ModalTitle>
@@ -45,7 +42,6 @@ const App = () => {
         </ModalHeader>
         <ModalBody>
           <strong><p>The file must be of type .csv</p></strong>
-          {/* <input type="file"></input> */}
           <Form>
             <FormGroup>
               <FormFile id="file" accept=".csv" />
@@ -54,7 +50,7 @@ const App = () => {
         </ModalBody>
         <ModalFooter>
           <Button variant="danger" onClick={() => setModalOpen(false)}>Close</Button>
-          <Button variant="success" onClick={uploadFile}>Save Data</Button>
+          <Button variant="success" onClick={readFile}>Save Data</Button>
         </ModalFooter>
       </Modal>
     </Container>

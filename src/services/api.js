@@ -1,6 +1,6 @@
 import Danxios from './danxios';
 
-const uploadCSVData = (data) => (
+const uploadCSVData = data => (
   Danxios.post('/upload', data)
 );
 
