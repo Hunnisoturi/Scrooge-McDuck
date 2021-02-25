@@ -46,7 +46,7 @@ const MovingAverage = ({ data }) => {
         <thead>
           <tr>
             <th>Date</th>
-            <th>% better than 5MA</th>
+            <th>Diffence over 5 day Moving Average (%)</th>
           </tr>
         </thead>
         <tbody>

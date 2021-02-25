@@ -34,8 +34,8 @@ const VolumeAndVariation = ({ data }) => {
         <thead>
           <tr>
             <th>Date</th>
-            <th>Volume</th>
-            <th>Fluctuation</th>
+            <th>Volume ($)</th>
+            <th>Fluctuation ($)</th>
           </tr>
         </thead>
         <tbody>

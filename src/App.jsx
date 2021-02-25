@@ -16,6 +16,38 @@ const App = () => {
 
   const formatData = data => {
     setArrayData(data);
+    const x = [];
+    data.forEach(row => x.push(row));
+    console.log(x);
+    const final = [];
+    x.forEach(row => {
+      const date = row[0].split('/');
+      const newDate = new Date(date[2], date[0] - 1, date[1]);
+
+      const close = row[1].replace('$', '');
+      const newClose = parseFloat(close);
+
+      const newVolume = parseInt(row[2], 10);
+
+      const open = row[3].replace('$', '');
+      const newOpen = parseFloat(open);
+
+      const high = row[4].replace('$', '');
+      const newHigh = parseFloat(high);
+
+      const low = row[5].replace('$', '');
+      const newLow = parseFloat(low);
+
+      final.push({
+        Date: newDate,
+        Close: newClose,
+        Volume: newVolume,
+        Open: newOpen,
+        High: newHigh,
+        Low: newLow,
+      });
+    });
+    console.log(final);
   };
 
   const csvDataToArray = data => {
