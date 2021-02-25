@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import '../styles/RawData.scss';
 
 const RawData = ({ data }) => (
-  <Accordion>
+  <Accordion className="accordion">
     <Card className="card">
       <Card.Header className="header">
         <AccordionToggle as={Button} variant="link" eventKey="0">
@@ -14,16 +14,18 @@ const RawData = ({ data }) => (
       <AccordionCollapse eventKey="0">
         <Table>
           <thead>
-            <th>Date</th>
-            <th>Close</th>
-            <th>Volume</th>
-            <th>Open</th>
-            <th>High</th>
-            <th>Low</th>
+            <tr>
+              <th>Date</th>
+              <th>Close</th>
+              <th>Volume</th>
+              <th>Open</th>
+              <th>High</th>
+              <th>Low</th>
+            </tr>
           </thead>
           <tbody>
             {data.map(row => (
-              <tr>
+              <tr key={row[0]}>
                 <td>{row[0]}</td>
                 <td>{row[1]}</td>
                 <td>{row[2]}</td>

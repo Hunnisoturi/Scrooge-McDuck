@@ -3,56 +3,30 @@ import { Button, Row, Col, Modal, ModalBody, ModalFooter, ModalTitle, Form, Form
 import ModalHeader from 'react-bootstrap/ModalHeader';
 import BullTrend from './components/BullTrend';
 import RawData from './components/RawData';
+import VolumeAndVariation from './components/VolumeAndVariation';
+import MovingAverage from './components/MovingAverage';
+import ImportModal from './components/ImportModal';
 import './styles/App.scss';
 
 const App = () => {
   const [dataModalOpen, setDataModalOpen] = useState(false);
   const [dateModalOpen, setDateModalOpen] = useState(false);
-  const [formattedData, setFormattedData] = useState(null);
-  const [dateMin, setDateMin] = useState('');
-  const [dateMax, setDateMax] = useState('');
+  const [arrayData, setArrayData] = useState(null);
+  // const [formattedData, setFormattedData] = useState(null);
 
   const formatData = data => {
-    // formattedData.forEach(row => {
-    //   const date = row[0].split('/');
-    //   const newDate = new Date(date[2], date[0] - 1, date[1]);
-    //   row[0] = newDate;
-    //   row.forEach(item => {
-    //     if (item.includes('$')) {
-    //       const newItem = item.replace('$', '');
-    //       console.log(newItem);
-    //     }
-    //   });
-    // });
-    // const finalData = [[]];
-
-    // data.forEach(row => {
-    //   row.forEach((item, index) => {
-    //     let newDate = null;
-    //     if (index === 0) {
-    //       const date = row[0].split('/');
-    //       newDate = new Date(date[2], date[0] - 1, date[1]);
-    //     }
-    //   });
-    //   finalData.push
-    // });
-    // console.log(finalData);
+    setArrayData(data);
   };
-
-  useEffect(() => {
-    console.log(dateMax);
-    console.log(dateMin);
-    console.log(formattedData);
-  }, [dateMin, dateMax, formattedData]);
 
   const csvDataToArray = data => {
     const rows = data.slice(data.indexOf('\n')).split('\n');
-    const newRows = rows.map(row => row.split(', '));
+    const newRows = rows.map(row => row.split(','));
     newRows.forEach((row, index) => {
       if (row.length === 1) {
         newRows.splice(index, 1);
       }
     });
+    // console.log(newRows);
     formatData(newRows);
   };
 
@@ -61,13 +35,32 @@ const App = () => {
     const fileReader = new FileReader();
     fileReader.onload = (() => {
       const data = fileReader.result;
+      // console.log(data);
       csvDataToArray(data);
       setDataModalOpen(false);
     });
     fileReader.readAsText(file);
   };
 
-  const componentOrNull = formattedData ? <RawData data={formattedData} />
+  const componentsOrPrompt = arrayData
+    ? (
+      <Container fluid>
+        <Row>
+          <Col xs={4}>
+            <BullTrend data={arrayData} />
+          </Col>
+          <Col xs={4}>
+            <VolumeAndVariation data={arrayData} />
+          </Col>
+          <Col xs={4}>
+            <MovingAverage data={arrayData} />
+          </Col>
+        </Row>
+        <Row>
+          <RawData data={arrayData} />
+        </Row>
+      </Container>
+    )
     : <h1>Start by Importing Data</h1>;
 
   return (
@@ -78,34 +71,15 @@ const App = () => {
             <h3>Scrooge McDuck</h3>
           </Col>
           <Col xs={4} className="d-flex justify-content-end">
+            <Button variant="primary" className="button" onClick={() => setDateModalOpen(true)} disabled={!arrayData}>Pick Date Range</Button>
             <Button variant="primary" className="button" onClick={() => setDataModalOpen(true)}>Import Data</Button>
-            <Button variant="primary" className="button" onClick={() => setDateModalOpen(true)} disabled={!formattedData}>Pick Date Range</Button>
           </Col>
         </Row>
       </header>
       <main className="main">
-        {/* <BullTrend /> */}
-        {componentOrNull}
+        {componentsOrPrompt}
       </main>
-      <Modal size="lg" centered show={dataModalOpen} onHide={() => setDataModalOpen(false)}>
-        <ModalHeader closeButton>
-          <ModalTitle>
-            Import a file
-          </ModalTitle>
-        </ModalHeader>
-        <ModalBody>
-          <strong><p>The file must be of type .csv</p></strong>
-          <Form>
-            <FormGroup>
-              <FormFile id="file" accept=".csv" />
-            </FormGroup>
-          </Form>
-        </ModalBody>
-        <ModalFooter>
-          <Button variant="danger" onClick={() => setDataModalOpen(false)}>Close</Button>
-          <Button variant="success" onClick={readFile}>Save Data</Button>
-        </ModalFooter>
-      </Modal>
+      <ImportModal open={dataModalOpen} setOpen={setDataModalOpen} read={readFile} />
       <Modal size="lg" centered show={dateModalOpen} onHide={() => setDateModalOpen(false)}>
         <ModalHeader closeButton>
           <ModalTitle>
