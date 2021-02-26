@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 // TODO: Calculation starts from the 5th day, fix with picking date range accordingly
 
 const MovingAverage = ({ data }) => {
+  const [movingData, setMovingData] = useState(data);
   const [topList, setTopList] = useState([]);
 
   const getPercentageDiff = (a, b) => {
@@ -18,7 +19,7 @@ const MovingAverage = ({ data }) => {
 
   const calculateMovingAverages = () => {
     const newData = [];
-    data.forEach(row => newData.push(row));
+    movingData.forEach(row => newData.push(row));
     const movingAverages = [];
     for (let i = 5; i < newData.length; i += 1) {
       const mean = (newData[i - 1].Close
@@ -36,13 +37,15 @@ const MovingAverage = ({ data }) => {
   };
 
   useEffect(() => {
+    setMovingData(data);
+    console.log('Moving average updated');
     calculateMovingAverages();
   }, [data]);
 
   return (
     <>
       <h4>Moving Average</h4>
-      <Table>
+      <Table striped hover>
         <thead>
           <tr>
             <th>Date</th>

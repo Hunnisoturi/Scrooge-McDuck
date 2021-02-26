@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
 import { Table } from 'react-bootstrap';
+import PropTypes from 'prop-types';
 
 const VolumeAndVariation = ({ data }) => {
-  const [topList] = useState([]);
+  const [volumeData, setVolumeData] = useState(data);
+  const [topList, setTopList] = useState([]);
 
   // TODO: if same volume, pick the one with higher price fluctuation
   const sortByVolume = (a, b) => b.Volume - a.Volume;
@@ -14,23 +15,31 @@ const VolumeAndVariation = ({ data }) => {
     return Math.abs(high - low).toFixed(2);
   };
 
-  useEffect(() => {
+  const populateTopList = () => {
     const sortData = [];
-    data.forEach(row => sortData.push(row));
+    volumeData.forEach(row => sortData.push(row));
     const sorted = sortData.sort(sortByVolume);
+    const temp = [];
     for (let i = 0; i < 5; i += 1) {
-      topList.push({
+      temp.push({
         Date: sorted[i].Date,
         Volume: sorted[i].Volume,
         PriceDiff: calculatePriceDiff(sorted[i]),
       });
     }
+    setTopList(temp);
+  };
+
+  useEffect(() => {
+    setVolumeData(data);
+    console.log('Volume updated');
+    populateTopList();
   }, [data]);
 
   return (
     <>
       <h4>Trading days by volume</h4>
-      <Table>
+      <Table striped hover>
         <thead>
           <tr>
             <th>Date</th>

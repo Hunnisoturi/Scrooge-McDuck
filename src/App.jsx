@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Row, Col, Container, Navbar, Image, Card } from 'react-bootstrap';
 import TimeRangePicker from './components/TimeRangePicker';
 import BullTrend from './components/BullTrend';
@@ -12,6 +12,48 @@ import './styles/App.scss';
 const App = () => {
   const [dataModalOpen, setDataModalOpen] = useState(false);
   const [formattedData, setFormattedData] = useState(null);
+  const [limitedData, setLimitedData] = useState(null);
+
+  const [dateRangeMin, setDateRangeMin] = useState(null);
+  const [dateRangeMax, setDateRangeMax] = useState(null);
+
+  const limitData = () => {
+    // if (dateRangeMin && dateRangeMax) {
+    //   const max = formattedData.indexOf(formattedData
+    //     .find(day => day.Date.getTime() === dateRangeMin.getTime()));
+    //   const min = formattedData.indexOf(formattedData
+    //     .find(day => day.Date.getTime() === dateRangeMax.getTime()));
+    //   console.log('min max', min, max);
+    //   const limited = formattedData.splice(min, max);
+    //   // console.log(limited);
+    //   setLimitedData(limited);
+    // }
+    if (dateRangeMin && dateRangeMax) {
+      const max = formattedData.find(day => day.Date.getTime() === dateRangeMax.getTime());
+      const min = formattedData.find(day => day.Date.getTime() === dateRangeMin.getTime());
+
+      const maxIndex = formattedData.indexOf(max);
+      const minIndex = formattedData.indexOf(min) + 1;
+
+      let limited = [];
+      limited = formattedData.slice(maxIndex, minIndex);
+      setLimitedData(limited);
+    }
+  };
+
+  // useEffect(() => {
+  //   console.log('FORMATTED CHANGED');
+  //   console.log(formattedData);
+  // }, [formattedData]);
+
+  useEffect(() => {
+    console.log('Limited updated');
+    console.log(limitedData);
+  }, [limitedData]);
+
+  useEffect(() => {
+    limitData();
+  }, [dateRangeMin, dateRangeMax]);
 
   const formatData = data => {
     const final = [];
@@ -53,7 +95,6 @@ const App = () => {
         newRows.splice(index, 1);
       }
     });
-    // console.log(newRows);
     formatData(newRows);
   };
 
@@ -62,40 +103,65 @@ const App = () => {
     const fileReader = new FileReader();
     fileReader.onload = (() => {
       const data = fileReader.result;
-      // console.log(data);
       csvDataToArray(data);
-      setDataModalOpen(false);
     });
-    fileReader.readAsText(file);
+
+    try {
+      fileReader.readAsText(file);
+    } catch (err) {
+      console.error(err);
+    }
   };
+
+  const clearFormattedAndLimited = () => {
+    setFormattedData(null);
+    setLimitedData(null);
+  };
+
+  const clearButton = formattedData
+    ? (
+      <Button
+        variant="outline-danger"
+        className="button"
+        onClick={clearFormattedAndLimited}
+      >
+        Clear Data
+      </Button>
+    ) : <div />;
+
+  const componentData = limitedData || formattedData;
 
   const componentsOrPrompt = formattedData
     ? (
       <Container fluid>
         <Row className="row-wide">
           <Card body className="component-card">
-            <TimeRangePicker data={formattedData} />
+            <TimeRangePicker
+              data={formattedData}
+              setMin={setDateRangeMin}
+              setMax={setDateRangeMax}
+            />
           </Card>
         </Row>
         <Row>
           <Col xs={4}>
             <Card body className="component-card">
-              <BullTrend data={formattedData} />
+              <BullTrend data={componentData} />
             </Card>
           </Col>
           <Col xs={4}>
             <Card body className="component-card">
-              <VolumeAndVariation data={formattedData} />
+              <VolumeAndVariation data={componentData} />
             </Card>
           </Col>
           <Col xs={4}>
             <Card body className="component-card">
-              <MovingAverage data={formattedData} />
+              <MovingAverage data={componentData} />
             </Card>
           </Col>
         </Row>
-        <Row>
-          <RawData data={formattedData} />
+        <Row className="row-wide">
+          <RawData data={componentData} />
         </Row>
       </Container>
     )
@@ -121,13 +187,17 @@ const App = () => {
             {' '}
             Scrooge McDuck
           </Navbar.Brand>
-          <Button
-            variant="outline-success"
-            className="button"
-            onClick={() => setDataModalOpen(true)}
-          >
-            Import Data
-          </Button>
+          <span>
+            {clearButton}
+            <Button
+              variant="outline-success"
+              className="button"
+              onClick={() => setDataModalOpen(true)}
+              disabled={formattedData}
+            >
+              Import Data
+            </Button>
+          </span>
         </Container>
       </Navbar>
       <Container fluid="xl" className="container">

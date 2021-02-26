@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Button } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import '../styles/TimeRangePicker.scss';
 
-const TimeRangePicker = ({ data }) => {
+const TimeRangePicker = ({ data, setMin, setMax }) => {
   const [dateMin, setDateMin] = useState(null);
   const [dateMax, setDateMax] = useState(null);
+
+  const [rangeMin, setRangeMin] = useState(null);
+  const [rangeMax, setRangeMax] = useState(null);
 
   const getDateInputString = input => {
     const year = input.getFullYear().toString();
@@ -21,14 +24,21 @@ const TimeRangePicker = ({ data }) => {
     return `${year}-${month}-${date}`;
   };
 
-  const getDateMin = () => setDateMin(getDateInputString(data[data.length - 1].Date));
+  const returnDateRange = () => {
+    setMin(new Date(`${rangeMin}T00:00:00`));
+    setMax(new Date(`${rangeMax}T00:00:00`));
+  };
 
+  const getDateMin = () => setDateMin(getDateInputString(data[data.length - 1].Date));
   const getDateMax = () => setDateMax(getDateInputString(data[0].Date));
+
+  const onMinChange = e => setRangeMin(e.target.value);
+  const onMaxChange = e => setRangeMax(e.target.value);
 
   useEffect(() => {
     getDateMax();
     getDateMin();
-  }, [data]);
+  });
 
   return (
     <div className="time-picker">
@@ -36,19 +46,24 @@ const TimeRangePicker = ({ data }) => {
       <Row>
         <Col>
           <p>Pick a starting date</p>
-          <input id="datemin" type="date" min={dateMin} max={dateMax} />
+          <input id="datemin" type="date" min={dateMin} max={dateMax} onChange={e => onMinChange(e)} />
         </Col>
         <Col>
           <p>Pick a ending date</p>
-          <input id="datmax" type="date" min={dateMin} max={dateMax} />
+          <input id="datemax" type="date" min={dateMin} max={dateMax} onChange={e => onMaxChange(e)} />
         </Col>
       </Row>
+      <Button variant="success" onClick={returnDateRange}>
+        Submit
+      </Button>
     </div>
   );
 };
 
 TimeRangePicker.propTypes = {
   data: PropTypes.array.isRequired,
+  setMin: PropTypes.func.isRequired,
+  setMax: PropTypes.func.isRequired,
 };
 
 export default TimeRangePicker;

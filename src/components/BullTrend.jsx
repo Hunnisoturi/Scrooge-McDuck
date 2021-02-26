@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 
 const BullTrend = ({ data }) => {
+  const [bullData, setBullData] = useState(data);
   const [longest, setLongest] = useState('');
 
   const calculateBullishTrend = () => {
     let closePrices = [];
-    data.forEach(row => {
+    bullData.forEach(row => {
       closePrices.push(row.Close);
     });
     closePrices = closePrices.reverse();
@@ -27,6 +28,8 @@ const BullTrend = ({ data }) => {
   };
 
   useEffect(() => {
+    console.log('Bull updated');
+    setBullData(data);
     calculateBullishTrend();
   }, [data]);
 
