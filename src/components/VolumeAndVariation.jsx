@@ -6,22 +6,22 @@ const VolumeAndVariation = ({ data }) => {
   const [topList, setTopList] = useState([]);
 
   // TODO: if same volume, pick the one with higher price fluctuation
-  const sortByVolume = (a, b) => parseInt(a[2], 10) - parseInt(b[2], 10);
+  const sortByVolume = (a, b) => b.Volume - a.Volume;
 
-  const calculatePriceDiff = (a) => {
-    const high = parseFloat(a[4].replace('$', ''), 10);
-    const low = parseFloat(a[5].replace('$', ''), 10);
+  const calculatePriceDiff = a => {
+    const high = a.High;
+    const low = a.Low;
     return Math.abs(high - low).toFixed(2);
   };
 
   useEffect(() => {
     const sortData = [];
     data.forEach(row => sortData.push(row));
-    const sorted = sortData.sort(sortByVolume).reverse();
+    const sorted = sortData.sort(sortByVolume);
     for (let i = 0; i < 5; i += 1) {
       topList.push({
-        Date: sorted[i][0],
-        Volume: sorted[i][2],
+        Date: sorted[i].Date,
+        Volume: sorted[i].Volume,
         PriceDiff: calculatePriceDiff(sorted[i]),
       });
     }
@@ -39,11 +39,11 @@ const VolumeAndVariation = ({ data }) => {
           </tr>
         </thead>
         <tbody>
-          {topList.map(row => (
-            <tr key={row.PriceDiff}>
-              <td>{ row.Date }</td>
-              <td>{ row.Volume }</td>
-              <td>{ row.PriceDiff }</td>
+          {topList.map(({ Date, Volume, PriceDiff }) => (
+            <tr key={PriceDiff}>
+              <td>{ `${Date.getDate()}/${Date.getMonth() + 1}/${Date.getFullYear()}` }</td>
+              <td>{ Volume }</td>
+              <td>{ PriceDiff }</td>
             </tr>
           ))}
         </tbody>

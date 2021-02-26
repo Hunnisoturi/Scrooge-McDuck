@@ -21,14 +21,14 @@ const MovingAverage = ({ data }) => {
     data.forEach(row => newData.push(row));
     const movingAverages = [];
     for (let i = 5; i < newData.length; i += 1) {
-      const mean = (parseFloat(newData[i - 1][1].replace('$', ''))
-        + parseFloat(newData[i - 2][1].replace('$', ''))
-        + parseFloat(newData[i - 3][1].replace('$', ''))
-        + parseFloat(newData[i - 4][1].replace('$', ''))
-        + parseFloat(newData[i - 5][1].replace('$', ''))
+      const mean = (newData[i - 1].Close
+        + newData[i - 2].Close
+        + newData[i - 3].Close
+        + newData[i - 4].Close
+        + newData[i - 5].Close
       ) / 5;
-      const diff = getPercentageDiff(parseFloat(newData[i][3].replace('$', '')), mean);
-      movingAverages.push({ Date: newData[i][0], Diff: diff.toFixed(2) });
+      const diff = getPercentageDiff(newData[i].Open, mean);
+      movingAverages.push({ Date: newData[i].Date, Diff: diff.toFixed(2) });
     }
 
     movingAverages.sort(sortByDiff);
@@ -41,7 +41,7 @@ const MovingAverage = ({ data }) => {
 
   return (
     <>
-      <h4>MovingAverage</h4>
+      <h4>Moving Average</h4>
       <Table>
         <thead>
           <tr>
@@ -50,10 +50,10 @@ const MovingAverage = ({ data }) => {
           </tr>
         </thead>
         <tbody>
-          {topList.map(row => (
-            <tr key={row.Date}>
-              <td>{ row.Date }</td>
-              <td>{ row.Diff }</td>
+          {topList.map(({ Date, Diff }) => (
+            <tr key={Date}>
+              <td>{ `${Date.getDate()}/${Date.getMonth() + 1}/${Date.getFullYear()}` }</td>
+              <td>{ Diff }</td>
             </tr>
           ))}
         </tbody>

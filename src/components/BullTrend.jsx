@@ -3,15 +3,13 @@ import PropTypes from 'prop-types';
 
 const BullTrend = ({ data }) => {
   const [longest, setLongest] = useState('');
+
   const calculateBullishTrend = () => {
     let closePrices = [];
     data.forEach(row => {
-      const item = row[1].replace('$', '');
-      closePrices.push(parseFloat(item));
+      closePrices.push(row.Close);
     });
     closePrices = closePrices.reverse();
-
-    // console.log(closePrices);
 
     let streak = 0;
     let longestStreak = 0;

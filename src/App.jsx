@@ -12,7 +12,7 @@ const App = () => {
   const [dataModalOpen, setDataModalOpen] = useState(false);
   const [dateModalOpen, setDateModalOpen] = useState(false);
   const [arrayData, setArrayData] = useState(null);
-  // const [formattedData, setFormattedData] = useState(null);
+  const [formattedData, setFormattedData] = useState(null);
 
   const formatData = data => {
     setArrayData(data);
@@ -48,6 +48,7 @@ const App = () => {
       });
     });
     console.log(final);
+    setFormattedData(final);
   };
 
   const csvDataToArray = data => {
@@ -74,22 +75,22 @@ const App = () => {
     fileReader.readAsText(file);
   };
 
-  const componentsOrPrompt = arrayData
+  const componentsOrPrompt = formattedData
     ? (
       <Container fluid>
         <Row>
           <Col xs={4}>
-            <BullTrend data={arrayData} />
+            <BullTrend data={formattedData} />
           </Col>
           <Col xs={4}>
-            <VolumeAndVariation data={arrayData} />
+            <VolumeAndVariation data={formattedData} />
           </Col>
           <Col xs={4}>
-            <MovingAverage data={arrayData} />
+            <MovingAverage data={formattedData} />
           </Col>
         </Row>
         <Row>
-          <RawData data={arrayData} />
+          <RawData data={formattedData} />
         </Row>
       </Container>
     )

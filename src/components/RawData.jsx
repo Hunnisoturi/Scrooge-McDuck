@@ -16,22 +16,22 @@ const RawData = ({ data }) => (
           <thead>
             <tr>
               <th>Date</th>
-              <th>Close</th>
-              <th>Volume</th>
-              <th>Open</th>
-              <th>High</th>
-              <th>Low</th>
+              <th>Close ($)</th>
+              <th>Volume ($)</th>
+              <th>Open ($)</th>
+              <th>High ($)</th>
+              <th>Low ($)</th>
             </tr>
           </thead>
           <tbody>
-            {data.map(row => (
-              <tr key={row[0]}>
-                <td>{row[0]}</td>
-                <td>{row[1]}</td>
-                <td>{row[2]}</td>
-                <td>{row[3]}</td>
-                <td>{row[4]}</td>
-                <td>{row[5]}</td>
+            {data.map(({ Date, Close, Volume, Open, High, Low }) => (
+              <tr key={Date}>
+                <td>{ `${Date.getDate()}/${Date.getMonth() + 1}/${Date.getFullYear()}` }</td>
+                <td>{ Close }</td>
+                <td>{ Volume}</td>
+                <td>{ Open }</td>
+                <td>{ High }</td>
+                <td>{ Low }</td>
               </tr>
             ))}
           </tbody>
