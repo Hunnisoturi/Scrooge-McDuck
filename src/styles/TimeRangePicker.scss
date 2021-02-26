@@ -1,0 +1,11 @@
+@import '~bootstrap/scss/bootstrap.scss';
+
+.time-picker {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-left: 15px;
+  padding-right: 15px;
+}

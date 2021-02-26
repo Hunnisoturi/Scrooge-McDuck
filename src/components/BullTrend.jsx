@@ -32,7 +32,7 @@ const BullTrend = ({ data }) => {
 
   return (
     <>
-      <h4>Longes bullish streak</h4>
+      <h4>Longest bullish streak</h4>
       <div>
         {longest}
       </div>

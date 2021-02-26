@@ -1,26 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Row, Col, Modal, ModalBody, ModalFooter, ModalTitle, Form, FormGroup, FormFile, Container } from 'react-bootstrap';
-import ModalHeader from 'react-bootstrap/ModalHeader';
+import React, { useState } from 'react';
+import { Button, Row, Col, Container, Navbar, Image, Card } from 'react-bootstrap';
+import TimeRangePicker from './components/TimeRangePicker';
 import BullTrend from './components/BullTrend';
 import RawData from './components/RawData';
 import VolumeAndVariation from './components/VolumeAndVariation';
 import MovingAverage from './components/MovingAverage';
 import ImportModal from './components/ImportModal';
+import scrooge from './assets/scrooge.jpg';
 import './styles/App.scss';
 
 const App = () => {
   const [dataModalOpen, setDataModalOpen] = useState(false);
-  const [dateModalOpen, setDateModalOpen] = useState(false);
-  const [arrayData, setArrayData] = useState(null);
   const [formattedData, setFormattedData] = useState(null);
 
   const formatData = data => {
-    setArrayData(data);
-    const x = [];
-    data.forEach(row => x.push(row));
-    console.log(x);
     const final = [];
-    x.forEach(row => {
+    data.forEach(row => {
       const date = row[0].split('/');
       const newDate = new Date(date[2], date[0] - 1, date[1]);
 
@@ -47,7 +42,6 @@ const App = () => {
         Low: newLow,
       });
     });
-    console.log(final);
     setFormattedData(final);
   };
 
@@ -78,15 +72,26 @@ const App = () => {
   const componentsOrPrompt = formattedData
     ? (
       <Container fluid>
+        <Row className="row-wide">
+          <Card body className="component-card">
+            <TimeRangePicker data={formattedData} />
+          </Card>
+        </Row>
         <Row>
           <Col xs={4}>
-            <BullTrend data={formattedData} />
+            <Card body className="component-card">
+              <BullTrend data={formattedData} />
+            </Card>
           </Col>
           <Col xs={4}>
-            <VolumeAndVariation data={formattedData} />
+            <Card body className="component-card">
+              <VolumeAndVariation data={formattedData} />
+            </Card>
           </Col>
           <Col xs={4}>
-            <MovingAverage data={formattedData} />
+            <Card body className="component-card">
+              <MovingAverage data={formattedData} />
+            </Card>
           </Col>
         </Row>
         <Row>
@@ -94,41 +99,44 @@ const App = () => {
         </Row>
       </Container>
     )
-    : <h1>Start by Importing Data</h1>;
+    : (
+      <Col className="welcome">
+        <h1>Welcome Mr McDuck!</h1>
+        <h4>Start analyzing by importing data.</h4>
+      </Col>
+    );
 
   return (
-    <Container fluid="xl" className="container">
-      <header className="header">
-        <Row>
-          <Col xs={8}>
-            <h3>Scrooge McDuck</h3>
-          </Col>
-          <Col xs={4} className="d-flex justify-content-end">
-            <Button variant="primary" className="button" onClick={() => setDateModalOpen(true)} disabled={!arrayData}>Pick Date Range</Button>
-            <Button variant="primary" className="button" onClick={() => setDataModalOpen(true)}>Import Data</Button>
-          </Col>
-        </Row>
-      </header>
-      <main className="main">
-        {componentsOrPrompt}
-      </main>
-      <ImportModal open={dataModalOpen} setOpen={setDataModalOpen} read={readFile} />
-      <Modal size="lg" centered show={dateModalOpen} onHide={() => setDateModalOpen(false)}>
-        <ModalHeader closeButton>
-          <ModalTitle>
-            Select Date Range
-          </ModalTitle>
-        </ModalHeader>
-        <ModalBody>
-          <strong><p>Select a time range to view</p></strong>
-          <Form>
-            <input type="date" />
+    <>
+      <Navbar bg="light">
+        <Container fluid="xl" className="header">
+          <Navbar.Brand>
+            <Image
+              alt="scrooge"
+              src={scrooge}
+              width="50"
+              height="50"
+              roundedCircle
+            />
             {' '}
-            <input type="date" />
-          </Form>
-        </ModalBody>
-      </Modal>
-    </Container>
+            Scrooge McDuck
+          </Navbar.Brand>
+          <Button
+            variant="outline-success"
+            className="button"
+            onClick={() => setDataModalOpen(true)}
+          >
+            Import Data
+          </Button>
+        </Container>
+      </Navbar>
+      <Container fluid="xl" className="container">
+        <main className="main">
+          {componentsOrPrompt}
+        </main>
+        <ImportModal open={dataModalOpen} setOpen={setDataModalOpen} read={readFile} />
+      </Container>
+    </>
   );
 };
 

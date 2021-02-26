@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Table } from 'react-bootstrap';
 
 const VolumeAndVariation = ({ data }) => {
-  const [topList, setTopList] = useState([]);
+  const [topList] = useState([]);
 
   // TODO: if same volume, pick the one with higher price fluctuation
   const sortByVolume = (a, b) => b.Volume - a.Volume;

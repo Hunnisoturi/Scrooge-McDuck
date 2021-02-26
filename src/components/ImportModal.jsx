@@ -11,7 +11,16 @@ const ImportModal = ({ open, setOpen, read }) => (
       </ModalTitle>
     </ModalHeader>
     <ModalBody>
-      <strong><p>The file must be of type .csv</p></strong>
+      <strong><p>The imported file must be formatted as follows:</p></strong>
+      <p>
+        “Date, Close/Last, Volume, Open, High, Low
+      </p>
+      <p>
+        01/20/2021, $127.83, 90757330, $127.78, $128.71, $126.938
+      </p>
+      <p>
+        01/19/2021, $123.83, 12334530, $225.41, $98.52, $126.938”
+      </p>
       <Form>
         <FormGroup>
           <FormFile id="file" accept=".csv" />
