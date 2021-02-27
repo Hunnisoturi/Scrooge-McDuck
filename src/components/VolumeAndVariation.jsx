@@ -1,15 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import PropTypes from 'prop-types';
+import { sortByVolumeAndPriceDiff, calculatePriceDiff } from '../utils/utils';
 
 const VolumeAndVariation = ({ data }) => {
   const [volumeData, setVolumeData] = useState(data);
   const [topList, setTopList] = useState([]);
-
-  const sortByVolumeAndPriceDiff = (a, b) => a.Volume === b.Volume
-    ? b.calculatePriceDiff() - a.calculatePriceDiff() : b.Volume - a.Volume;
-
-  const calculatePriceDiff = a => Math.abs(a.High - a.Low).toFixed(2);
 
   const populateTopList = () => {
     const sortData = [];

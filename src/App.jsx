@@ -14,7 +14,6 @@ const App = () => {
   const [formattedData, setFormattedData] = useState(null);
   const [limitedData, setLimitedData] = useState(null);
   const [movingAverageData, setMovingAverageData] = useState(null);
-
   const [dateRangeMin, setDateRangeMin] = useState(null);
   const [dateRangeMax, setDateRangeMax] = useState(null);
 
@@ -37,6 +36,10 @@ const App = () => {
       setMovingAverageData(limitedMA);
     }
   };
+
+  useEffect(() => {
+    limitData();
+  }, [dateRangeMin, dateRangeMax]);
 
   const formatData = data => {
     const final = [];
@@ -102,6 +105,10 @@ const App = () => {
     setLimitedData(null);
   };
 
+  const componentData = limitedData || formattedData;
+
+  const maData = movingAverageData || componentData;
+
   const clearOrImport = formattedData
     ? (
       <Button
@@ -121,16 +128,6 @@ const App = () => {
         Import Data
       </Button>
     );
-
-  useEffect(() => {
-    console.log('dateRangeMin: ', dateRangeMin);
-    console.log('dateRangeMax: ', dateRangeMax);
-    limitData();
-  }, [dateRangeMin, dateRangeMax]);
-
-  const componentData = limitedData || formattedData;
-
-  const maData = movingAverageData || componentData;
 
   const componentsOrPrompt = formattedData
     ? (

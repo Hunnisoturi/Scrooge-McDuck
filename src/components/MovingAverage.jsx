@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Table } from 'react-bootstrap';
 import PropTypes from 'prop-types';
-
-// TODO: Calculation starts from the 5th day, fix with picking date range accordingly
+import { getPercentageDiff, sortByDiff } from '../utils/utils';
 
 const MovingAverage = ({ data }) => {
   const [movingData, setMovingData] = useState(data);
   const [topList, setTopList] = useState([]);
-
-  const getPercentageDiff = (open, mean) => ((open - mean) / Math.abs(mean)) * 100;
-
-  const sortByDiff = (a, b) => b.Diff - a.Diff;
 
   const calculateMovingAverages = () => {
     const newData = [];

@@ -25,7 +25,7 @@ const BullTrend = ({ data }) => {
         streak = 0;
       }
     }
-    setLongest(longestStreak);
+    return longestStreak;
   };
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const BullTrend = ({ data }) => {
   }, [data]);
 
   useEffect(() => {
-    calculateBullishTrend();
+    setLongest(calculateBullishTrend());
   }, [bullData]);
 
   return (

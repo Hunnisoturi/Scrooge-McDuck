@@ -34,7 +34,6 @@ const TimeRangePicker = ({ data, setMin, setMax }) => {
     if (!min) {
       min = data.find(day => day.Date.getTime() < dateRangeMin.getTime());
     }
-
     if (!max) {
       max = data.find(day => day.Date.getTime() < dateRangeMax.getTime());
     }
