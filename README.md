@@ -1,70 +1,59 @@
-# Getting Started with Create React App
+## Project Overview
+
+This is my version of an MVP for Scrooge McDuck. Mr McDuck needed a software solution for analyzing
+historical stock market data. The project requirements were as follows:
+
+- Mr McDuck must be able to import historical stock market data from a CSV file to the application
+- He must be able to limit the date range to be inspected
+- He must be able to gain the following insights from the data:
+  - How many days was the longest bullish trend within a given date range?
+  - Which dates within the given date range had a) the highest trading volume and b) the most significant price change within a day
+  - Within a given date range, which dates had the best opening price compared to 5 days simple moving average (SMA 5)
+
+On top of these requirements I also implemented a collapsible list with full dataset (or if limited, then the data in the given date range)
+
+## Project technologies
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Installation and running the app
 
-In the project directory, you can run:
+Clone the project to your local machine.
+
+Navigate to the project folder.
+
+In the project folder, run:
+
+### `npm install`
+
+This will install the required dependencies.
+
+To run the application, in the project folder run:
 
 ### `npm start`
 
-Runs the app in the development mode.\
+This will open the app in development mode.
 Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Important instructions
 
-### `npm test`
+THe CSV file given to the application must be formatted as follows:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+“Date, Close/Last, Volume, Open, High, Low
 
-### `npm run build`
+01/19/2021, $127.83, 90757330, $127.78, $128.71, $126.938”
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The app is only validated to work with this data format, and you may encounter errors if the data format is not correct.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+The app is only validated to work on a desktop viewport. You may find the user experience to be suboptimal on a mobile device or tablet.
+The app is only validated to work on the latest version of Google Chrome. All the features may not be available on other browsers.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Final notes
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+I had a blast making this, hope you enjoy it too. All the code in this repository is free to use.
 
 ## Learn More
 
 You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
 To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
