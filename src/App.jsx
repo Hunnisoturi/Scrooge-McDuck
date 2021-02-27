@@ -18,16 +18,6 @@ const App = () => {
   const [dateRangeMax, setDateRangeMax] = useState(null);
 
   const limitData = () => {
-    // if (dateRangeMin && dateRangeMax) {
-    //   const max = formattedData.indexOf(formattedData
-    //     .find(day => day.Date.getTime() === dateRangeMin.getTime()));
-    //   const min = formattedData.indexOf(formattedData
-    //     .find(day => day.Date.getTime() === dateRangeMax.getTime()));
-    //   console.log('min max', min, max);
-    //   const limited = formattedData.splice(min, max);
-    //   // console.log(limited);
-    //   setLimitedData(limited);
-    // }
     if (dateRangeMin && dateRangeMax) {
       const max = formattedData.find(day => day.Date.getTime() === dateRangeMax.getTime());
       const min = formattedData.find(day => day.Date.getTime() === dateRangeMin.getTime());
@@ -41,11 +31,6 @@ const App = () => {
     }
   };
 
-  // useEffect(() => {
-  //   console.log('FORMATTED CHANGED');
-  //   console.log(formattedData);
-  // }, [formattedData]);
-
   useEffect(() => {
     console.log('Limited updated');
     console.log(limitedData);
@@ -57,7 +42,7 @@ const App = () => {
 
   const formatData = data => {
     const final = [];
-    data.forEach(row => {
+    data.forEach((row, index) => {
       const date = row[0].split('/');
       const newDate = new Date(date[2], date[0] - 1, date[1]);
 
@@ -76,6 +61,7 @@ const App = () => {
       const newLow = parseFloat(low);
 
       final.push({
+        id: index,
         Date: newDate,
         Close: newClose,
         Volume: newVolume,
@@ -118,7 +104,7 @@ const App = () => {
     setLimitedData(null);
   };
 
-  const clearButton = formattedData
+  const clearOrImport = formattedData
     ? (
       <Button
         variant="outline-danger"
@@ -127,7 +113,16 @@ const App = () => {
       >
         Clear Data
       </Button>
-    ) : <div />;
+    ) : (
+      <Button
+        variant="outline-success"
+        className="button"
+        onClick={() => setDataModalOpen(true)}
+        disabled={formattedData}
+      >
+        Import Data
+      </Button>
+    );
 
   const componentData = limitedData || formattedData;
 
@@ -188,15 +183,7 @@ const App = () => {
             Scrooge McDuck
           </Navbar.Brand>
           <span>
-            {clearButton}
-            <Button
-              variant="outline-success"
-              className="button"
-              onClick={() => setDataModalOpen(true)}
-              disabled={formattedData}
-            >
-              Import Data
-            </Button>
+            {clearOrImport}
           </span>
         </Container>
       </Navbar>

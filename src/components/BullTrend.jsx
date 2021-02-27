@@ -28,10 +28,12 @@ const BullTrend = ({ data }) => {
   };
 
   useEffect(() => {
-    console.log('Bull updated');
     setBullData(data);
-    calculateBullishTrend();
   }, [data]);
+
+  useEffect(() => {
+    calculateBullishTrend();
+  }, [bullData]);
 
   return (
     <>

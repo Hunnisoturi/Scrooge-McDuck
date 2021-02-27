@@ -32,8 +32,8 @@ const RawData = ({ data }) => {
               </tr>
             </thead>
             <tbody>
-              {rawData.map(({ Date, Close, Volume, Open, High, Low }) => (
-                <tr key={Date}>
+              {rawData.map(({ id, Date, Close, Volume, Open, High, Low }) => (
+                <tr key={id}>
                   <td>{ `${Date.getDate()}/${Date.getMonth() + 1}/${Date.getFullYear()}` }</td>
                   <td>{ Close }</td>
                   <td>{ Volume}</td>
