@@ -24,7 +24,6 @@ const App = () => {
       setLimitedData(limited);
 
       const availableDays = (formattedData.length) - dateRangeMin;
-      console.log('AvailableDays: ', availableDays);
 
       let limitedMA = [];
       if (availableDays > 5) {
@@ -32,7 +31,6 @@ const App = () => {
       } else {
         limitedMA = formattedData.slice(dateRangeMax, dateRangeMin + availableDays);
       }
-      console.log(limitedMA);
       setMovingAverageData(limitedMA);
     }
   };
