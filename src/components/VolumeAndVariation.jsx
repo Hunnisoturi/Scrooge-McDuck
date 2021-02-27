@@ -6,15 +6,15 @@ const VolumeAndVariation = ({ data }) => {
   const [volumeData, setVolumeData] = useState(data);
   const [topList, setTopList] = useState([]);
 
-  // TODO: if same volume, pick the one with higher price fluctuation
-  const sortByVolume = (a, b) => b.Volume - a.Volume;
+  const sortByVolumeAndPriceDiff = (a, b) => a.Volume === b.Volume
+    ? b.calculatePriceDiff() - a.calculatePriceDiff() : b.Volume - a.Volume;
 
   const calculatePriceDiff = a => Math.abs(a.High - a.Low).toFixed(2);
 
   const populateTopList = () => {
     const sortData = [];
     volumeData.forEach(row => sortData.push(row));
-    const sorted = sortData.sort(sortByVolume);
+    const sorted = sortData.sort(sortByVolumeAndPriceDiff);
     const temp = [];
     for (let i = 0; i < 5; i += 1) {
       temp.push({

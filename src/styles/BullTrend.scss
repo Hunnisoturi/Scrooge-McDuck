@@ -1,15 +1,14 @@
 @import '~bootstrap/scss/bootstrap.scss';
 
-.time-picker {
+.bull-div {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding-left: 15px;
-  padding-right: 15px;
 }
 
-.time-picker-button {
-  margin-top: 15px;
+.big-text {
+  font-size: 125px;
 }
+

@@ -24,9 +24,26 @@ const TimeRangePicker = ({ data, setMin, setMax }) => {
     return `${year}-${month}-${date}`;
   };
 
-  const returnDateRange = () => {
-    setMin(new Date(`${rangeMin}T00:00:00`));
-    setMax(new Date(`${rangeMax}T00:00:00`));
+  const validateDates = () => {
+    const dateRangeMax = new Date(`${rangeMax}T00:00:00`);
+    const dateRangeMin = new Date(`${rangeMin}T00:00:00`);
+
+    let max = data.find(day => day.Date.getTime() === dateRangeMax.getTime());
+    let min = data.find(day => day.Date.getTime() === dateRangeMin.getTime());
+
+    if (!min) {
+      min = data.find(day => day.Date.getTime() < dateRangeMin.getTime());
+    }
+
+    if (!max) {
+      max = data.find(day => day.Date.getTime() < dateRangeMax.getTime());
+    }
+
+    const maxIndex = data.indexOf(max);
+    const minIndex = data.indexOf(min) + 1;
+
+    setMin(minIndex);
+    setMax(maxIndex);
   };
 
   const getDateMin = () => setDateMin(getDateInputString(data[data.length - 1].Date));
@@ -46,15 +63,15 @@ const TimeRangePicker = ({ data, setMin, setMax }) => {
       <Row>
         <Col>
           <p>Pick a starting date</p>
-          <input id="datemin" type="date" min={dateMin} max={dateMax} onChange={e => onMinChange(e)} />
+          <input id="datemin" type="date" min={dateMin} max={rangeMax || dateMax} onChange={e => onMinChange(e)} />
         </Col>
         <Col>
           <p>Pick a ending date</p>
-          <input id="datemax" type="date" min={dateMin} max={dateMax} onChange={e => onMaxChange(e)} />
+          <input id="datemax" type="date" min={rangeMin || dateMin} max={dateMax} onChange={e => onMaxChange(e)} />
         </Col>
       </Row>
-      <Button variant="success" onClick={returnDateRange}>
-        Submit
+      <Button variant="success" className="time-picker-button" disabled={!rangeMin || !rangeMax} onClick={validateDates}>
+        Pick New Time Range
       </Button>
     </div>
   );

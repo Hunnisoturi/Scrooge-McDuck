@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import '../styles/BullTrend.scss';
 
 const BullTrend = ({ data }) => {
   const [bullData, setBullData] = useState(data);
@@ -24,7 +25,7 @@ const BullTrend = ({ data }) => {
         streak = 0;
       }
     }
-    setLongest(`Longest bullish streak lasted for ${longestStreak} days`);
+    setLongest(longestStreak);
   };
 
   useEffect(() => {
@@ -38,8 +39,11 @@ const BullTrend = ({ data }) => {
   return (
     <>
       <h4>Longest bullish streak</h4>
-      <div>
-        {longest}
+      <hr />
+      <div className="bull-div">
+        <h5>Longest bullish streak was</h5>
+        <span className="big-text">{longest}</span>
+        <h5>days long</h5>
       </div>
     </>
   );

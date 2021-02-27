@@ -13,32 +13,30 @@ const App = () => {
   const [dataModalOpen, setDataModalOpen] = useState(false);
   const [formattedData, setFormattedData] = useState(null);
   const [limitedData, setLimitedData] = useState(null);
+  const [movingAverageData, setMovingAverageData] = useState(null);
 
   const [dateRangeMin, setDateRangeMin] = useState(null);
   const [dateRangeMax, setDateRangeMax] = useState(null);
 
   const limitData = () => {
-    if (dateRangeMin && dateRangeMax) {
-      const max = formattedData.find(day => day.Date.getTime() === dateRangeMax.getTime());
-      const min = formattedData.find(day => day.Date.getTime() === dateRangeMin.getTime());
-
-      const maxIndex = formattedData.indexOf(max);
-      const minIndex = formattedData.indexOf(min) + 1;
-
+    if (dateRangeMin || dateRangeMax) {
       let limited = [];
-      limited = formattedData.slice(maxIndex, minIndex);
+      limited = formattedData.slice(dateRangeMax, dateRangeMin);
       setLimitedData(limited);
+
+      const availableDays = (formattedData.length) - dateRangeMin;
+      console.log('AvailableDays: ', availableDays);
+
+      let limitedMA = [];
+      if (availableDays > 5) {
+        limitedMA = formattedData.slice(dateRangeMax, dateRangeMin + 5);
+      } else {
+        limitedMA = formattedData.slice(dateRangeMax, dateRangeMin + availableDays);
+      }
+      console.log(limitedMA);
+      setMovingAverageData(limitedMA);
     }
   };
-
-  useEffect(() => {
-    console.log('Limited updated');
-    console.log(limitedData);
-  }, [limitedData]);
-
-  useEffect(() => {
-    limitData();
-  }, [dateRangeMin, dateRangeMax]);
 
   const formatData = data => {
     const final = [];
@@ -124,7 +122,15 @@ const App = () => {
       </Button>
     );
 
+  useEffect(() => {
+    console.log('dateRangeMin: ', dateRangeMin);
+    console.log('dateRangeMax: ', dateRangeMax);
+    limitData();
+  }, [dateRangeMin, dateRangeMax]);
+
   const componentData = limitedData || formattedData;
+
+  const maData = movingAverageData || componentData;
 
   const componentsOrPrompt = formattedData
     ? (
@@ -151,7 +157,7 @@ const App = () => {
           </Col>
           <Col xs={4}>
             <Card body className="component-card">
-              <MovingAverage data={componentData} />
+              <MovingAverage data={maData} />
             </Card>
           </Col>
         </Row>

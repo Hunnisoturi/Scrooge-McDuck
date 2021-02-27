@@ -7,7 +7,6 @@ const RawData = ({ data }) => {
   const [rawData, setRawData] = useState(data);
 
   useEffect(() => {
-    console.log('Raw data updated');
     setRawData(data);
   }, [data]);
 

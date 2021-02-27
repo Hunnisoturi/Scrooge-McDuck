@@ -8,10 +8,9 @@ const MovingAverage = ({ data }) => {
   const [movingData, setMovingData] = useState(data);
   const [topList, setTopList] = useState([]);
 
-  const getPercentageDiff = (a, b) => a > b ? Math.abs(((a - b) / a) * 100)
-    : -Math.abs(((a - b) / a) * 100);
+  const getPercentageDiff = (open, mean) => ((open - mean) / Math.abs(mean)) * 100;
 
-  const sortByDiff = (a, b) => parseFloat(b.Diff) - parseFloat(a.Diff);
+  const sortByDiff = (a, b) => b.Diff - a.Diff;
 
   const calculateMovingAverages = () => {
     const newData = [];
@@ -24,8 +23,9 @@ const MovingAverage = ({ data }) => {
         + newData[i - 4].Close
         + newData[i - 5].Close
       ) / 5;
+
       const diff = getPercentageDiff(newData[i].Open, mean);
-      movingAverages.push({ id: i - 5, Date: newData[i].Date, Diff: diff.toFixed(2) });
+      movingAverages.push({ id: i - 5, Date: newData[i].Date, Diff: diff });
     }
 
     movingAverages.sort(sortByDiff);
@@ -34,7 +34,6 @@ const MovingAverage = ({ data }) => {
 
   useEffect(() => {
     setMovingData(data);
-    // console.log('Moving average updated');
   }, [data]);
 
   useEffect(() => {
@@ -48,14 +47,14 @@ const MovingAverage = ({ data }) => {
         <thead>
           <tr>
             <th>Date</th>
-            <th>Diffence over 5 day Moving Average (%)</th>
+            <th>Diffence to 5 day Moving Average (%)</th>
           </tr>
         </thead>
         <tbody>
           {topList.map(({ id, Date, Diff }) => (
             <tr key={id}>
               <td>{ `${Date.getDate()}/${Date.getMonth() + 1}/${Date.getFullYear()}` }</td>
-              <td>{ Diff }</td>
+              <td>{ Diff.toFixed(2) }</td>
             </tr>
           ))}
         </tbody>
