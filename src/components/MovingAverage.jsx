@@ -10,6 +10,8 @@ const MovingAverage = ({ data }) => {
   const calculateMovingAverages = () => {
     const newData = [];
     movingData.forEach(row => newData.push(row));
+    newData.reverse();
+    console.log(newData);
     const movingAverages = [];
     for (let i = 5; i < newData.length; i += 1) {
       const mean = (newData[i - 1].Close
